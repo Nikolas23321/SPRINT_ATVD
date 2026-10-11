@@ -6,19 +6,24 @@
 <body>
     <h1>Cadastrar Projeto</h1>
 
-    <form>
-        Nome: <input type="text">
+    <form method="POST">
+        {% csrf_token %}
+
+        Nome:
+        {{ form.nome }}
         <br><br>
 
-        Descrição: <input type="text">
+        Descrição:
+        {{ form.descricao }}
         <br><br>
 
-        Data: <input type="date">
+        Data:
+        {{ form.data_inicio }}
         <br><br>
 
         <input type="submit" value="Cadastrar">
     </form>
 
-    <a href="/">Voltar</a>
+    <a href="/projetos/">Voltar</a>
 </body>
 </html>

@@ -1,11 +1,34 @@
 
-<!DOCTYPE html>
 <html>
 <head>
     <title>Projetos</title>
 </head>
 <body>
+    
+    {% if messages %}
+        {% for message in messages %}
+            <p>{{ message }}</p>
+        {% endfor %}
+    {% endif %}
+
     <h1>Meus Projetos</h1>
-    <p>Bem-vindo ao sistema de projetos!</p>
+
+    <a href="/cadastrar/">Cadastrar Projeto</a>
+
+    <h2>Projetos cadastrados:</h2>
+
+    {% for projeto in projetos %}
+        <p>Nome: {{ projeto.nome }}</p>
+        <p>Descrição: {{ projeto.descricao }}</p>
+        <p>Data: {{ projeto.data_inicio }}</p>
+
+        <a href="/editar/{{ projeto.id }}/">Editar</a>
+
+        <a href="/excluir/{{ projeto.id }}/">Excluir</a>
+
+        <hr>
+    {% empty %}
+        <p>Nenhum projeto cadastrado.</p>
+    {% endfor %}
 </body>
 </html>

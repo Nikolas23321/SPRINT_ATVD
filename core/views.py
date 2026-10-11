@@ -1,13 +1,9 @@
-from django.shortcuts import render
+
+
+from django.shortcuts import render, redirect
 from .models import Projeto
-
-
-def lista_projetos(request):
-    return render(request, 'lista_projetos.html')
-
-
-def cadastrar_projeto(request):
-    return render(request, 'cadastrar_projeto.html')
+from .forms import ProjetoForm
+from django.contrib import messages
 
 
 
@@ -18,14 +14,40 @@ def lista_projetos(request):
 
 def cadastrar_projeto(request):
     if request.method == 'POST':
-        nome = request.POST['nome']
-        descricao = request.POST['descricao']
-        data_inicio = request.POST['data_inicio']
+        form = ProjetoForm(request.POST)
 
-        Projeto.objects.create(
-            nome=nome,
-            descricao=descricao,
-            data_inicio=data_inicio
-        )
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'Projeto cadastrado com sucesso!')
+            return redirect('/projetos/')
+    else:
+        form = ProjetoForm()
 
-    return render(request, 'cadastrar_projeto.html')
+    return render(request, 'cadastrar_projeto.html', {'form': form})
+
+
+
+def editar_projeto(request, pk):
+    projeto = Projeto.objects.get(pk=pk)
+
+    if request.method == 'POST':
+        form = ProjetoForm(request.POST, instance=projeto)
+
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'Projeto atualizado com sucesso!')
+            return redirect('/projetos/')
+
+    else:
+        form = ProjetoForm(instance=projeto)
+
+    return render(request, 'editar_projeto.html', {'form': form})
+
+
+
+def excluir_projeto(request, pk):
+    projeto = Projeto.objects.get(pk=pk)
+    projeto.delete()
+    messages.success(request, 'Projeto excluído com sucesso!')
+    return redirect('/projetos/')
+
