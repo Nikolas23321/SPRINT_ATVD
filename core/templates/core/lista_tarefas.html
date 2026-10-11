@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>Tarefas</title>
+</head>
+<body>
+
+    <a href="{% url 'core:lista_projetos' %}">← Voltar para Projetos</a>
+
+    <h1>Tarefas</h1>
+
+    {% if messages %}
+        {% for message in messages %}
+            <p>{{ message }}</p>
+        {% endfor %}
+    {% endif %}
+
+    <a href="{% url 'core:criar_tarefa' %}">Nova tarefa</a>
+
+    {% for tarefa in tarefas %}
+        <hr>
+        <h2>{{ tarefa.titulo }}</h2>
+        <p>Projeto: {{ tarefa.projeto.nome }}</p>
+        <p>Prioridade: {{ tarefa.get_prioridade_display }}</p>
+
+        {% if tarefa.concluido %}
+            <p>Concluída</p>
+        {% else %}
+            <p>Pendente</p>
+        {% endif %}
+
+        <a href="{% url 'core:editar_tarefa' tarefa.pk %}">Editar</a>
+        <a href="{% url 'core:excluir_tarefa' tarefa.pk %}">Excluir</a>
+    {% empty %}
+        <p>Nenhuma tarefa cadastrada.</p>
+    {% endfor %}
+</body>
+</html>
